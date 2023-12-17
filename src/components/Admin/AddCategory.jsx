@@ -83,7 +83,7 @@ const AddCategory = () => {
         </Link>
       </div>
       <form className="formUploadImg" onSubmit={handleSubmit}>
-        <div className="formGroup" style={{ width: "100%" }} >
+        <div className="formGroup"  >
           <div style={{ width: "35%" }}>
             <div className="form-group">
               <label style={{ marginBottom: "5px" }} htmlFor="categoryName">Tên thể loại:</label>
