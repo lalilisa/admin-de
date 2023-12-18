@@ -1,14 +1,14 @@
 import React, { Component, useEffect, useState } from 'react'
 import axios from "axios"
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import '~/css/ListCategory.css'
 import ReactPaginate from 'react-paginate'
 import Sidebar from './Sidebar'
 import { Switch } from '@mui/material'
 
-const PRODUCT_API_BASE_URL = "http://localhost:8085/api/v1/movies"
+const SUB_MOVIE_API_BASE_URL = "http://localhost:8085/api/v1/movies/submovie/"
 
-const ListProduct = () => {
+const SubMovie = () => {
 
     const [products, setProducts] = useState([])
     const [currentItems, setCurrentItems] = useState([]);
@@ -17,8 +17,11 @@ const ListProduct = () => {
     const itemsPerPage = 5;
     var [actives, setActives] = useState([]);
     const navigate = useNavigate();
+    const { id } = useParams();
+    const { state } = useLocation();
+
     useEffect(() => {
-        axios.get(PRODUCT_API_BASE_URL + "/admin/all", {
+        axios.get(SUB_MOVIE_API_BASE_URL + id, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
@@ -46,7 +49,7 @@ const ListProduct = () => {
 
         actives[index] = e.target.checked;
         setActives([...actives]);
-        axios.put(PRODUCT_API_BASE_URL + '/active/' + movieId, { active: actives[index] ? 1 : 0 }, {
+        axios.put(SUB_MOVIE_API_BASE_URL + 'active/' + movieId, { active: actives[index] ? 1 : 0 }, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
@@ -61,8 +64,8 @@ const ListProduct = () => {
     const handleEditMovie = (movieId) => {
         navigate("/admin/product/edit/" + movieId);
     }
-    const handleDeleteMovie = (movieId) => {
-        axios.delete(PRODUCT_API_BASE_URL + '/' + movieId, {
+    const handleDeleteSubMovie = (movieId) => {
+        axios.delete(SUB_MOVIE_API_BASE_URL + '/' + movieId, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
@@ -76,9 +79,7 @@ const ListProduct = () => {
         setProducts(products.filter(e => e.id !== movieId))
     }
 
-    const viewSubMovie = (e) => {
-        navigate("/admin/product/submovie/" + e?.id, { state: { ...e } });
-    }
+
 
     return (
         <>
@@ -90,12 +91,12 @@ const ListProduct = () => {
                     <table className='table'>
                         <thead>
                             <tr>
-                                <th>Ảnh</th>
-                                <th>Tên</th>
-                                <th>Mã</th>
-                                <th>Loại</th>
-                                <th>Đánh giá</th>
+                                <th>Tên phim</th>
+                                <th>Tên tập</th>
+                                <th>Tập</th>
+                                <th>Ngày công bố</th>
                                 <th>Tình trạng</th>
+                                <th></th>
                                 {/* <th>Còn</th> */}
                                 <th></th>
                             </tr>
@@ -105,12 +106,13 @@ const ListProduct = () => {
                                 currentItems.map((row, index) => {
                                     return (
                                         <tr>
-                                            <td>
-                                                <img className='cateImg' src={row?.thumnail} alt="" /></td>
+                                            {/* <td>
+                                                <img className='cateImg' src={row?.thumnail} alt="" /></td> */}
+                                            <td>{state?.name}</td>
                                             <td>{row?.name}</td>
-                                            <td>{row?.code}</td>
-                                            <td>{row?.moviesType === 'MOVIES' ? 'Phim lẻ' : 'Phim bộ'}</td>
-                                            <td>{row?.rate}</td>
+                                            <td>{row?.episode}</td>
+                                            <td>{row?.publicDate}</td>
+
                                             <td>
                                                 <Switch
                                                     checked={actives[index]}
@@ -119,9 +121,9 @@ const ListProduct = () => {
                                                 />
                                             </td>
                                             <td>
-                                                <button style={{ border: 'none' }} onClick={() => { viewSubMovie(row) }}><i class="iconList fa-solid fa-list"></i></button>
+                                                {/* <button style={{ border: 'none' }} onClick={() => { viewSubMovie(row?.id) }}><i class="iconList fa-solid fa-list"></i></button> */}
                                                 <button style={{ border: 'none' }} onClick={() => { handleEditMovie(row?.id) }} ><i class="iconEdit fa-solid fa-pen-to-square"></i></button>
-                                                <button style={{ border: 'none' }} onClick={() => { handleDeleteMovie(row?.id) }}><i class="iconDelete fa-solid fa-trash-can"></i></button>
+                                                <button style={{ border: 'none' }} onClick={() => { handleDeleteSubMovie(row?.id) }}><i class="iconDelete fa-solid fa-trash-can"></i></button>
                                             </td>
                                         </tr>
                                     )
@@ -156,4 +158,4 @@ const ListProduct = () => {
     )
 }
 
-export default ListProduct
+export default SubMovie;
