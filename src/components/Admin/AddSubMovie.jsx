@@ -19,7 +19,8 @@ const AddSubMovie = () => {
         console.log(subMovie)
         const formData = new FormData();
         formData.append("name", subMovie?.name)
-        formData.append("file", subMovie?.thumnail)
+        if(subMovie?.thumnail)
+            formData.append("file", subMovie?.thumnail)
         formData.append("active", active ? 1 : 0)
         formData.append("episode", subMovie?.episode)
         formData.append("movieId", id)

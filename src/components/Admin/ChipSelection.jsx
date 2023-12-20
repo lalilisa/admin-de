@@ -44,12 +44,13 @@ function getStyles(name, categoryName, theme) {
 
 export default function MultipleSelectChip({ data, setCategories , selectedCategory}) {
     const theme = useTheme();
-    const [categoryName, setCategoryName] = React.useState([]);
+    const [categoryName, setCategoryName] = React.useState([...selectedCategory.map(e=>e?.name)]);
     
     useEffect(()=>{
-        setCategoryName(selectedCategory ? selectedCategory : []);
-        console.log('categoryName',categoryName)
-    },[selectedCategory])
+            setCategoryName(selectedCategory ? selectedCategory.map(e=>e?.name) : []);
+    },[data])
+    // console.log('xxx',selectedCategory);
+    // console.log('xxxName',categoryName)
     const handleChange = (event) => {
         const {
             target: { value },
@@ -58,7 +59,7 @@ export default function MultipleSelectChip({ data, setCategories , selectedCateg
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
-        
+        console.log('categoryNames',value)
         setCategories(data?.filter(e=>categoryName.includes(e?.name)));
 
     };

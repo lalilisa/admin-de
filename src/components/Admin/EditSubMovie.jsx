@@ -16,8 +16,6 @@ const EditSubMovie = () => {
     const { id } = useParams();
     const [subMovie, setSubMovie] = useState({})
     const {state} = useLocation();
-    console.log(state)
-    console.log("EDIDIDIDIDIDIDIDDIDIDIDIDIDIDIDI")
     const fetchDetailMovie = () => {
         axios.get(PRODUCT_API_BASE_URL + "/" + state?.movieId, {
             headers: {
@@ -55,24 +53,25 @@ const EditSubMovie = () => {
         formData.append("name", subMovie?.name)
         if (subMovie?.file)
             formData.append("file", subMovie?.file)
-        formData.append("episode", subMovie?.description)
+        formData.append("movieId", state?.movieId)
+        formData.append("episode", subMovie?.episode)
         console.log('update:', subMovie)
-        // formData.append("stockQuantity",product.stockQuantity)
-        // axios.put(SUBMOVIE_API_BASE_URL + "/" + id,
-        //     formData,
-        //     {
-        //         headers: {
-        //             "Content-Type": "multipart/form-data",
-        //             "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
-        //         },
-        //     })
-        //     .then(() => {
-        //         navigative("/admin/product/submovie/" + product?.id)
-        //         alert("Lưu thành công")
-        //     })
-        //     .catch((error) => {
-        //         alert("Không thành công")
-        //     })
+        formData.append("stockQuantity",product.stockQuantity)
+        axios.put(SUBMOVIE_API_BASE_URL + "/" + id,
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+                },
+            })
+            .then(() => {
+                navigative("/admin/product/submovie/" + product?.id)
+                alert("Lưu thành công")
+            })
+            .catch((error) => {
+                alert("Không thành công")
+            })
     }
 
 

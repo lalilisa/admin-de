@@ -56,15 +56,16 @@ const EditProduct = () => {
     const formData = new FormData();
     formData.append("name", product?.name)
     formData.append("code", product?.code)
-    if (product?.imgProductFile)
-      formData.append("thumnail", product?.imgProductFile)
+    if (product?.file)
+      formData.append("thumnail", product?.file)
     formData.append("description", product?.description)
     formData.append("type", product?.moviesType)
     formData.append("duration", product?.duration);
     formData.append("categoriesIds", cateSelect.map(e => e?.id))
-    console.log('update:', product)
+    console.log('update:', product);
+    console.log('cateSelect ', cateSelect)
     // formData.append("stockQuantity",product.stockQuantity)
-    axios.put(PRODUCT_API_BASE_URL+"/"+id,
+    axios.put(PRODUCT_API_BASE_URL + "/" + id,
       formData,
       {
         headers: {
@@ -116,9 +117,9 @@ const EditProduct = () => {
     fetchCategory();
 
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     fetchDetailMovie();
-  },[])
+  }, [])
   return (
     <>
 
@@ -170,7 +171,7 @@ const EditProduct = () => {
 
               <div class="form-group">
                 <label style={{ marginBottom: "5px" }} htmlFor="productName">Mô tả:</label>
-                <textarea className="form-control" id="moTa" name="description" onChange={handleChange} value={product?.descption}></textarea >
+                <textarea className="form-control" id="moTa" name="description" onChange={handleChange} value={product?.description}></textarea >
               </div>
 
 
@@ -181,11 +182,13 @@ const EditProduct = () => {
               </div>
               <div>
                 <label style={{ marginBottom: "5px" }} htmlFor="thumnail">Ảnh sản phẩm:</label>
-                <input type="file" className="form-control" onChange={imagesFileAsURl} id="thumnail" name="thumnail" />
+                <input type="file" className="form-control" onChange={imagesFileAsURl} id="thumnail" name="file" />
               </div>
               <div>
                 <label style={{ marginBottom: "5px", marginTop: '10px' }} htmlFor="categoryName">Danh mục:</label>
-                <MultipleSelectChip data={categories} setCategories={setCateSelect} selectedCategory={cateSelect?.map(e => e?.name)} />
+                {cateSelect &&
+                  <MultipleSelectChip data={categories} setCategories={setCateSelect} selectedCategory={cateSelect} />
+                }
               </div>
               <button className='btnUpload' type="submit">Cập nhật</button>
             </div>
