@@ -62,7 +62,7 @@ const SubMovie = () => {
             });
     }
     const handleEditMovie = (movieId) => {
-        navigate("/admin/product/edit/" + movieId);
+        navigate("/admin/product/editsubmovie/" + movieId, { state: { movieId: id } });
     }
     const handleDeleteSubMovie = (movieId) => {
         axios.delete(SUB_MOVIE_API_BASE_URL + '/' + movieId, {
@@ -85,8 +85,8 @@ const SubMovie = () => {
         <>
 
             <div className='pageCate'>
-                <span className='titlePageCate'>Danh sách sản phẩm</span>
-                <div className='BtnAdd'><Link to={`add`}><button className='btnAdd'>Thêm mới</button></Link></div>
+                <span className='titlePageCate'>Danh sách</span>
+                <div className='BtnAdd'><button onClick={() => { navigate("/admin/product/addsubmovie/" + id) }} className='btnAdd'>Thêm mới</button></div>
                 <div className='main'>
                     <table className='table'>
                         <thead>
